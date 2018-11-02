@@ -1,4 +1,4 @@
-package norconex.committer.neo4j;
+package com.norconex.committer.neo4j;
 
 import java.util.List;
 
