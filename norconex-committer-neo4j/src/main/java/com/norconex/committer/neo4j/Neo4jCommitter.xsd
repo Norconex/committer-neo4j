@@ -46,6 +46,7 @@
             </xs:element>
             
             <xs:element name="primaryLabel" type="nonEmptyString" minOccurs="0" maxOccurs="1" />
+            <xs:element name="multiValuesJoiner" type="nonEmptyString" minOccurs="0" maxOccurs="1" />
             <xs:element name="nodeTopology" minOccurs="1" maxOccurs="1">
               <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -55,6 +56,9 @@
                 </xs:restriction>
               </xs:simpleType>
             </xs:element>
+            
+             <xs:element ref="relationships" minOccurs="0" maxOccurs="1" />
+             <xs:element ref="additionalLabels" minOccurs="0" maxOccurs="1" />
             
           </xs:all>
         </xs:extension> 
@@ -72,16 +76,14 @@
 
   <xs:element name="relationship">
     <xs:complexType>
-      <xs:simpleContent>
-        <xs:extension base="nonEmptyString">
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="direction" type="xs:string" />
-        </xs:extension>
-      </xs:simpleContent>
-      <xs:complexContent>
-      	<xs:element name="sourcePropertyKey" type="nonEmptyString" minOccurs="1" maxOccurs="1" />
-      	<xs:element name="targetPropertyKey" type="nonEmptyString" minOccurs="1" maxOccurs="1" />
-      </xs:complexContent>
+        <xs:all> 
+      		<xs:element name="sourcePropertyKey" type="nonEmptyString" minOccurs="1" maxOccurs="1" />
+      		<xs:element name="targetPropertyKey" type="nonEmptyString" minOccurs="1" maxOccurs="1" />
+      	</xs:all>
+      	<xs:attribute name="type" type="nonEmptyString" use="required"/>
+        <xs:attribute name="direction" type="direction" />
+        <xs:attribute name="targetFindSyntax" type="findSyntax" />
+      <!-- </xs:complexContent> -->
     </xs:complexType>  
   </xs:element>
   
@@ -89,8 +91,9 @@
     <xs:complexType>
       <xs:all>
         <xs:element ref="sourceField" minOccurs="0" maxOccurs="unbounded"/>
-      </xs:all>
+      </xs:all>     
     </xs:complexType>
+    
   </xs:element>  
   
    <xs:element name="sourceField">
@@ -102,6 +105,22 @@
       </xs:simpleContent>
     </xs:complexType>
   </xs:element>          
+  
+  <xs:simpleType name="direction">
+        <xs:restriction base="nonEmptyString">
+            <xs:enumeration value="OUTGOING" />
+            <xs:enumeration value="INCOMING" />
+            <xs:enumeration value="NONE" />
+            <xs:enumeration value="BOTH" />
+        </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="findSyntax">
+        <xs:restriction base="nonEmptyString">
+            <xs:enumeration value="MATCH" />
+            <xs:enumeration value="MERGE" />            
+        </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="nonEmptyString">
     <xs:restriction base="xs:string">

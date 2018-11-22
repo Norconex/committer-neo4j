@@ -23,7 +23,7 @@ public class GraphConfiguration implements Serializable{
 	private Relationships relationships = new Relationships();
 
 	/**
-	 * Returns the label used for all nodes imported into Neo4j with the committer, aka the primary label
+	 * Returns the label used for all nodes imported into Neo4j with the committer
 	 * @return primaryLabel
 	 */
 	public String getPrimaryLabel() {
@@ -81,7 +81,7 @@ public class GraphConfiguration implements Serializable{
 	}
 	
 	/**
-	 * Additional labels are a mapping between meta property values and labels to add on a node
+	 * 
 	 * @return additional labels
 	 */
 	public List<AdditionalLabel> getAdditionalLabels() {
@@ -89,7 +89,7 @@ public class GraphConfiguration implements Serializable{
 	}
 
 	/**
-	 * Additional labels are a mapping between meta property values and labels to add on a node
+	 * 
 	 * Sets additional labels
 	 * @param additionalLabels
 	 */
@@ -98,7 +98,7 @@ public class GraphConfiguration implements Serializable{
 	}
 	
 	/**
-	 * Additional labels are a mapping between meta property values and labels to add on a node
+	 * 
 	 * Adds additional label
 	 * @param additionalLabel
 	 */
@@ -136,8 +136,8 @@ public class GraphConfiguration implements Serializable{
 		
 		/**
 		 * Constructor with the following arguments:
-		 * @param sourceField: the name of the targeted metadata field
-		 * @param keep: if you want to keep the matadata field or not
+		 * @param sourceField the name of the targeted metadata field
+		 * @param keep if you want to keep the matadata field or not
 		 */
 		public AdditionalLabel(String sourceField,boolean keep) {
 			super();
@@ -194,7 +194,7 @@ public class GraphConfiguration implements Serializable{
 	 */
 	public static class Relationships implements Serializable{
 		private List<Relationship> relationships = new ArrayList<>();
-		private List<RelationshipExclusion> exclusions = new ArrayList<>();
+		
 		
 		public List<Relationship> getRelationships() {
 			return relationships;
@@ -206,30 +206,6 @@ public class GraphConfiguration implements Serializable{
 		public void addRelationship(Relationship relationship) {
 			this.relationships.add(relationship);
 		}
-		
-		public List<RelationshipExclusion> getExclusions() {
-			return exclusions;
-		}
-		public void setExclusions(List<RelationshipExclusion> exclusions) {
-			this.exclusions = exclusions;
-		}
-		
-		public void addExclusion (RelationshipExclusion exclusion){
-			this.exclusions.add(exclusion);
-		}
-		
-	}
-	
-	public static class RelationshipExclusion {
-		
-		private String sourceField;
-		
-		public String getSourceField() {
-			return sourceField;
-		}
-		public void setSourceField(String sourceField) {
-			this.sourceField = sourceField;
-		}
 	}
 	
 	/**
@@ -240,6 +216,17 @@ public class GraphConfiguration implements Serializable{
 	 */
 	public static class Relationship implements Serializable{
 		
+		/**
+		 * Direction of the relationship
+		 * <ul>
+		 * <li>OUTGOING: from source to target</li>
+		 * <li>INCOMING: from target to source</li>
+		 * <li>BOTH: two relationships, from target to source and to source from target</li>
+		 * <li>NODE: unique relationship between two nodes (direction has no importance)</li>
+		 * </ul>
+		 * @author sroussy
+		 *
+		 */
 		public static enum DIRECTION{
 			OUTGOING,
 			INCOMING,
@@ -247,10 +234,26 @@ public class GraphConfiguration implements Serializable{
 			NONE
 		}
 		
+		/**
+		 * Neo4j Cypher keyword used to retrieve a node (usually applied to the target node)
+		 * <ul>
+		 * <li>MATCH: find the target node and create the relationship only if the target node exists </li>
+		 * <li>MERGE: find or create the target node and create the relationship</li
+		 * </ul>
+		 * 
+		 * @author sroussy
+		 *
+		 */
+		public static enum FIND_SYNTAX{
+			MATCH,
+			MERGE
+		}
+		
 		private String type;
 		private String sourcePropertyKey;
 		private String targetPropertyKey;
 		private DIRECTION direction;
+		private FIND_SYNTAX targetFindSyntax = FIND_SYNTAX.MERGE;
 		
 		
 		
@@ -279,6 +282,12 @@ public class GraphConfiguration implements Serializable{
 		}
 		public String getTargetPropertyKey() {
 			return targetPropertyKey;
+		}
+		public FIND_SYNTAX getTargetFindSyntax() {
+			return targetFindSyntax;
+		}
+		public void setTargetFindSyntax(FIND_SYNTAX targetFindSyntax) {
+			this.targetFindSyntax = targetFindSyntax;
 		}
 		@Override
 		public int hashCode() {

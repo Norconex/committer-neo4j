@@ -18,9 +18,9 @@ import org.neo4j.driver.v1.Values;
 
 import com.norconex.committer.core.CommitterException;
 import com.norconex.committer.neo4j.GraphConfiguration;
-import com.norconex.committer.neo4j.GraphEntry;
 import com.norconex.committer.neo4j.GraphConfiguration.AdditionalLabel;
 import com.norconex.committer.neo4j.GraphConfiguration.Relationship;
+import com.norconex.committer.neo4j.GraphEntry;
 import com.norconex.commons.lang.map.Properties;
 
 public abstract class NodeTopology {
@@ -77,6 +77,7 @@ public abstract class NodeTopology {
 	
 	protected void addParentQueryPart(StringBuilder sb){
 		
+		
 		if ( this.graphConfiguration.getRelationships() != null){
 			final String primaryLabel = this.graphConfiguration.getPrimaryLabel();		
 			
@@ -85,8 +86,8 @@ public abstract class NodeTopology {
 			for (Relationship rel : this.graphConfiguration.getRelationships().getRelationships() ) {
 				sb.append(" WITH a,$").append(NEO4J_PARAM_SUB_ENTRIES).append("_").append(i).append(" AS subs UNWIND subs AS sub ")
 				.append(" WITH a, sub")
-				.append(" WHERE a.`").append(rel.getTargetPropertyKey()).append("` <> sub")				
-				.append(" MERGE (s:`").append(primaryLabel).append("`{`").append(rel.getTargetPropertyKey()).append("`:sub})");
+				.append(" WHERE a.`").append(rel.getTargetPropertyKey()).append("` <> sub ")
+				.append(rel.getTargetFindSyntax().name()).append(" (s:`").append(primaryLabel).append("`{`").append(rel.getTargetPropertyKey()).append("`:sub})");
 				
 				switch (rel.getDirection()){
 					case OUTGOING :sb.append(" MERGE (s)<-[:").append(rel.getType()).append("]-(a)");break;

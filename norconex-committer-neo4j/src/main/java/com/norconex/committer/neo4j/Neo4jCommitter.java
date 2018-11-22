@@ -23,6 +23,7 @@ import com.norconex.committer.core.IDeleteOperation;
 import com.norconex.committer.neo4j.GraphConfiguration.AdditionalLabel;
 import com.norconex.committer.neo4j.GraphConfiguration.Relationship;
 import com.norconex.committer.neo4j.GraphConfiguration.Relationship.DIRECTION;
+import com.norconex.committer.neo4j.GraphConfiguration.Relationship.FIND_SYNTAX;
 import com.norconex.committer.neo4j.topologies.NoContentTopology;
 import com.norconex.committer.neo4j.topologies.NodeTopology;
 import com.norconex.committer.neo4j.topologies.OneNodeTopology;
@@ -242,6 +243,7 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
 	public static final String ATTRIBUTE_KEY_DIRECTION = "[@direction]";
 	public static final String ATTRIBUTE_KEY_TYPE = "[@type]";
 	public static final String ATTRIBUTE_KEY_KEEP = "[@keep]";
+	public static final String ATTRIBUTE_KEY_TARGET_FIND_SYNTAX = "[@targetFindSyntax]";
 
 	/** Default Identifier property name for Neo4j nodes */
 	public static final String DEFAULT_NEO4J_ID_FIELD = "identity";
@@ -251,6 +253,8 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
 	public static final String DEFAULT_NEO4J_PARENT_LINK = "PARENT_OF";
 	/** Default primary label name for Neo4j nodes */	
 	public static final String DEFAULT_NEO4J_PRIMARY_LABEL = "CommittedDocument";
+	/** Default property name for target in relationships */
+	public static final String DEFAULT_NEO4J_TARGET_FIND_SYNTAX = "document.reference";
 	/** Default relationship direction */
 	public static final DIRECTION DEFAULT_NEO4J_RELS_DIRECTION = DIRECTION.NONE;
 	/** Default separator for multi-values in a Neo4j property */
@@ -333,14 +337,9 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
 	        w.writeElementString(CONFIG_KEY_MULTI_VALUES_JOINER, this.getGraphConfiguration().getMultiValuesJoiner());
 	        
 			
-			
-			
-			/*graphTopologyConfiguration.setSourceReferenceField(xml.getString("sourceReferenceField",DEFAULT_SOURCE_REFERENCE_FIELD));
-			graphTopologyConfiguration.setTargetReferenceField(xml.getString("targetReferenceField",DEFAULT_NEO4J_ID_FIELD));
-			graphTopologyConfiguration.setSourceContentField(xml.getString("sourceContentField"));
-			graphTopologyConfiguration.setTargetContentField(xml.getString("targetContentField",DEFAULT_NEO4J_CONTENT_FIELD));
-			*/
-			
+	       
+	        w.writeElementString("targetReferenceField", this.getTargetReferenceField());
+	        w.writeElementString("targetContentField", this.getTargetContentField());
 			
 	        
 	        w.writeStartElement(("additionalLabels"));
@@ -360,8 +359,10 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
 		        for (Relationship rel : rels) {
 		        	w.writeStartElement("relationship");
 		        	
+		        	
 		        	w.writeAttributeString("type", rel.getType());
 		        	w.writeAttributeString("direction", rel.getDirection().name());
+		        	w.writeAttributeString("targetFindSyntax", rel.getTargetFindSyntax().name());
 		        	
 		        	w.writeStartElement("sourcePropertyKey");
 		        	w.writeCharacters(rel.getSourcePropertyKey());
@@ -402,11 +403,11 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
 				
 		graphConfiguration.setPrimaryLabel(xml.getString(CONFIG_KEY_PRIMARY_LABEL,DEFAULT_NEO4J_PRIMARY_LABEL));
 		
-		/*graphTopologyConfiguration.setSourceReferenceField(xml.getString("sourceReferenceField",DEFAULT_SOURCE_REFERENCE_FIELD));
-		graphTopologyConfiguration.setTargetReferenceField(xml.getString("targetReferenceField",DEFAULT_NEO4J_ID_FIELD));
-		graphTopologyConfiguration.setSourceContentField(xml.getString("sourceContentField"));
-		graphTopologyConfiguration.setTargetContentField(xml.getString("targetContentField",DEFAULT_NEO4J_CONTENT_FIELD));
-		*/
+		graphConfiguration.setSourceReferenceField(this.getSourceReferenceField());
+		graphConfiguration.setTargetReferenceField(this.getTargetContentField());
+		graphConfiguration.setSourceContentField(this.getSourceContentField());
+		graphConfiguration.setTargetContentField(this.getTargetContentField());
+		
 		
 		graphConfiguration.setMultiValuesJoiner(xml.getString(CONFIG_KEY_MULTI_VALUES_JOINER,DEFAULT_MULTI_VALUES_JOINER));
 		
@@ -420,17 +421,7 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
                 graphConfiguration.addAdditionalLabel(additionalLabel);
             }
         }
-        
-        
-        final List<HierarchicalConfiguration> xmlProps = xml.configurationsAt("relationships.exclusions.exclusion");
-        if (!xmlProps.isEmpty()) {
-            
-            /*for (HierarchicalConfiguration xmlProp : xmlProps) {	            	
-            	final AdditionalLabel additionalLabel = new AdditionalLabel();
-                additionalLabel.setSourceField(xmlProp.getString("","unknown"));
-                graphTopologyConfiguration.addAdditionalLabel(additionalLabel);
-            }*/
-        }
+       
         
         final List<HierarchicalConfiguration> xmlRel = xml.configurationsAt("relationships.relationship");
         if (!xmlRel.isEmpty()) {
@@ -441,6 +432,7 @@ public class Neo4jCommitter extends AbstractMappedCommitter{
                 rel.setSourcePropertyKey(xmlPropRel.getString(CONFIG_KEY_SOURCE_PROPERTY_KEY,DEFAULT_NEO4J_TARGET_PROPERTY_KEY));
                 rel.setTargetPropertyKey(xmlPropRel.getString(CONFIG_KEY_TARGET_PROPERTY_KEY,DEFAULT_NEO4J_SOURCE_PROPERTY_KEY));
                 rel.setDirection(DIRECTION.valueOf(xmlPropRel.getString(ATTRIBUTE_KEY_DIRECTION,DIRECTION.NONE.name())));
+                rel.setTargetFindSyntax(FIND_SYNTAX.valueOf(xmlPropRel.getString(ATTRIBUTE_KEY_TARGET_FIND_SYNTAX,FIND_SYNTAX.MERGE.name())));
                 graphConfiguration.getRelationships().addRelationship(rel);
             }
         }
