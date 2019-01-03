@@ -350,14 +350,14 @@ public class Neo4jCommitter extends AbstractMappedCommitter {
 
     /**
      * Returns the label used for all nodes imported into Neo4j with the committer
-     * @return primaryLabel
+     * @return primaryLabel primary label
      */
     public String getPrimaryLabel() {
         return primaryLabel;
     }
     /**
      * Sets  the label used for all nodes imported into Neo4j with the committer
-     * @param primaryLabel
+     * @param primaryLabel primary label
      */
     public void setPrimaryLabel(String primaryLabel) {
         this.primaryLabel = primaryLabel;

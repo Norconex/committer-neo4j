@@ -50,7 +50,7 @@ public class Relationship implements Serializable{
      * Neo4j Cypher keyword used to retrieve a node (usually applied to the target node)
      * <ul>
      * <li>MATCH: find the target node and create the relationship only if the target node exists </li>
-     * <li>MERGE: find or create the target node and create the relationship</li
+     * <li>MERGE: find or create the target node and create the relationship</li>
      * </ul>
      */
     public enum FindSyntax {
