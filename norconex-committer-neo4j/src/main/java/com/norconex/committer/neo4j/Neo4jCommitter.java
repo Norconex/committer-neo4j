@@ -128,7 +128,7 @@ import com.norconex.commons.lang.xml.EnhancedXMLStreamWriter;
  *          The structure of a node for a committed document. Possible values:
  *
  *             ONE_NODE:   Default. Creates a node with metadata and content.
- *             NO_CONTENT: Creates a node without content and
+ *             NO_CONTENT: Creates a node without content.
  *             SPLITTED:   Creates three nodes, one main node with the ID for
  *                         the committed document, one with the content
  *                         (linked to the main node) and another with metadata
@@ -146,7 +146,7 @@ import com.norconex.commons.lang.xml.EnhancedXMLStreamWriter;
  *          between nodes. If a source or target does not exist,
  *          it will be created automatically.
  *          --&gt;
- *          &lt;relationship type="(type of the relationship)
+ *          &lt;relationship type="(type of the relationship)"
  *              direction="[NONE|INCOMING|OUTGOING|BOTH]"&gt;
  *            &lt;sourcePropertyKey&gt;
  *              (a metadata field)
@@ -194,15 +194,18 @@ import com.norconex.commons.lang.xml.EnhancedXMLStreamWriter;
  *          unless "keep" is set to <code>true</code>.)
  *      &lt;/sourceContentField&gt;
  *      &lt;targetContentField&gt;
- *         (Target repository field name for a document content/body.
- *          Default is "content". Since document content can sometimes be
- *          quite large, a CLOB field is usually best advised.)
+ *         (Target field name for a document content/body.
+ *          Default is "content".)
  *      &lt;/targetContentField&gt;
+ *      &lt;queueDir&gt;(optional path where to queue files)&lt;/queueDir&gt;
+ *      &lt;queueSize&gt;(max queue size before committing)&lt;/queueSize&gt;
  *      &lt;commitBatchSize&gt;
  *         (Max number of documents to send to the database at once.)
  *      &lt;/commitBatchSize&gt;
- *      &lt;queueDir&gt;(optional path where to queue files)&lt;/queueDir&gt;
- *      &lt;queueSize&gt;(max queue size before committing)&lt;/queueSize&gt;
+ *      &lt;maxRetries&gt;(max retries upon commit failures)&lt;/maxRetries&gt;
+ *      &lt;maxRetryWait&gt;
+ *        (max delay in milliseconds between retries)
+ *      &lt;/maxRetryWait&gt;
  *  &lt;/committer&gt;
  * </pre>
  *
