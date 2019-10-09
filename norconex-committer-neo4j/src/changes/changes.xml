@@ -10,7 +10,21 @@
     <release version="1.0.0" date="2019-01-09" description="Initial release">
       <action dev="sroussy" type="add">
         Initial release.
+      </action>      
+    </release>
+    <release version="2.0.0" date="2019-10-04" description="Extended release">
+      <action dev="sroussy" type="add">
+        Add regexFilter attribute on relationship element to filter pages
       </action>
+      <action dev="sroussy" type="add">
+        Add label attribute on sourcePropertyKey element and targetPropertyKey element to filter nodes with labels
+      </action>
+      <action dev="sroussy" type="fix">
+        Default values are not injected #2
+      </action>
+      <action dev="sroussy" type="fix">
+        targetFindSyntax attribute not documented #3
+      </action>      
     </release>
 
   </body>
