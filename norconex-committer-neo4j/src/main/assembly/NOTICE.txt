@@ -1,5 +1,5 @@
 Norconex Neo4j Committer
-Copyright 2018 Norconex Inc.
+Copyright 2018-2020 Norconex Inc.
 
 General Information:
 ====================
@@ -8,7 +8,7 @@ For any inquiries about Norconex Neo4j Committer, please
 contact Norconex Inc. at info@norconex.com.
 
 This product website and documentation is located at:
-https://www.norconex.com/collectors/committer-neo4j/
+https://opensource.norconex.com/committers/neo4j/
 
 Norconex licenses:
 ==================
