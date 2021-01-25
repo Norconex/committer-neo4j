@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<committer class="com.norconex.committer.neo4j.Neo4jCommitter">
-    <uri>bolt://localhost:7687</uri>
-    <user>neo4j</user>
-    <password>root</password>
-    <authentType>BASIC</authentType>
-    <primary-label>COMMITTED_DOC</primary-label>
-</committer>
