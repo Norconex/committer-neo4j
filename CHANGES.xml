@@ -7,7 +7,7 @@
   </properties>
   <body>
 
-    <release version="2.0.0-SNAPSHOT" date="2021-??-??" description="Major release">
+    <release version="2.0.0-M1" date="2021-03-01" description="Major release">
       <action dev="essiembre" type="update">
         Major refactor to support Norconex Committer Core 3.x.  Adds ability
         to retry failing batches, perform field mapping, routing, etc. See
