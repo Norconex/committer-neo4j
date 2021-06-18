@@ -30,6 +30,8 @@ import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Session;
+import org.neo4j.driver.SessionConfig;
+import org.neo4j.driver.SessionConfig.Builder;
 import org.neo4j.driver.internal.value.NullValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,12 +57,14 @@ class Neo4jClient {
 
     private final Neo4jCommitterConfig config;
 
-    private Driver neo4jDriver;
+    private final Driver neo4jDriver;
+    private final SessionConfig sessionConfig;
 
     public Neo4jClient(Neo4jCommitterConfig config) {
         this.config = Objects.requireNonNull(
                 config, "'config' must not be null.");
         this.neo4jDriver = createNeo4jDriver();
+        this.sessionConfig = createNeo4jSessionConfig();
     }
 
     private Driver createNeo4jDriver() {
@@ -77,6 +81,13 @@ class Neo4jClient {
         }
         LOG.info("Neo4j Driver loaded.");
         return driver;
+    }
+    private SessionConfig createNeo4jSessionConfig() {
+        Builder b = SessionConfig.builder();
+        if (StringUtils.isNotBlank(this.config.getDatabase())) {
+            b.withDatabase(config.getDatabase());
+        }
+        return b.build();
     }
 
     public void post(Iterator<ICommitterRequest> it) throws CommitterException {
@@ -98,9 +109,7 @@ class Neo4jClient {
     }
 
     public void close() {
-        if (neo4jDriver != null) {
-            neo4jDriver.close();
-        }
+        neo4jDriver.close();
         LOG.info("Neo4j driver closed.");
     }
 
@@ -113,7 +122,7 @@ class Neo4jClient {
             meta.set(config.getNodeContentProperty(), IOUtils.toString(
                     req.getContent(), StandardCharsets.UTF_8));
         }
-        try (Session session = neo4jDriver.session()) {
+        try (Session session = neo4jDriver.session(sessionConfig)) {
             session.writeTransaction(tx -> {
                 tx.run(config.getUpsertCypher(), toObjectMap(meta));
                 return null;
@@ -125,7 +134,7 @@ class Neo4jClient {
         Properties meta = req.getMetadata();
         Optional.ofNullable(trimToNull(config.getNodeIdProperty())).ifPresent(
                 fld -> meta.set(fld, req.getReference()));
-        try (Session session = neo4jDriver.session()) {
+        try (Session session = neo4jDriver.session(sessionConfig)) {
             session.writeTransaction(tx -> {
                 tx.run(config.getDeleteCypher(), toObjectMap(meta));
                 return null;

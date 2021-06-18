@@ -25,6 +25,7 @@
         <xs:extension base="AbstractBatchCommitter">
           <xs:all>
             <xs:element name="uri" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="database" type="xs:string" minOccurs="0" maxOccurs="1" />
             <xs:element name="upsertCypher" type="xs:string" minOccurs="1" maxOccurs="1" />
             <xs:element name="deleteCypher" type="xs:string" minOccurs="1" maxOccurs="1" />
             <xs:element ref="credentials" minOccurs="0" maxOccurs="1"/>

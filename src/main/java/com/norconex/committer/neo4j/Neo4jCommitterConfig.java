@@ -45,6 +45,7 @@ public class Neo4jCommitterConfig implements Serializable {
     public static final String DEFAULT_NEO4J_CONTENT_PROPERTY = "content";
 
     private String uri;
+    private String database;
     private final Credentials credentials = new Credentials();
     private String multiValuesJoiner;
     private String nodeIdProperty = DEFAULT_NEO4J_ID_PROPERTY;
@@ -52,6 +53,13 @@ public class Neo4jCommitterConfig implements Serializable {
     private String upsertCypher;
     private String deleteCypher;
     private final Set<String> optionalParameters = new HashSet<>();
+
+    public String getDatabase() {
+        return database;
+    }
+    public void setDatabase(String database) {
+        this.database = database;
+    }
 
     public Credentials getCredentials() {
         return credentials;
@@ -114,6 +122,7 @@ public class Neo4jCommitterConfig implements Serializable {
 
     void saveToXML(XML xml) {
         xml.addElement("uri", getUri());
+        xml.addElement("database", getDatabase());
         credentials.saveToXML(xml.addElement("credentials"));
         xml.addElement("multiValuesJoiner", getMultiValuesJoiner());
         xml.addElement("nodeIdProperty", getNodeIdProperty());
@@ -125,6 +134,7 @@ public class Neo4jCommitterConfig implements Serializable {
     }
     void loadFromXML(XML xml) {
         setUri(xml.getString("uri", getUri()));
+        setDatabase(xml.getString("database", getDatabase()));
         xml.ifXML("credentials", x -> x.populate(credentials));
         setMultiValuesJoiner(xml.getString(
                 "multiValuesJoiner", getMultiValuesJoiner()));

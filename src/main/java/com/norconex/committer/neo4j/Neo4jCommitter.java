@@ -71,6 +71,9 @@ import com.norconex.commons.lang.xml.XML;
  *   </deleteCypher>
  *
  *   <!-- Optional settings --->
+ *   <database>
+ *     (A database name when using one other than the default one.)
+ *   </database>
  *   <credentials>
  *     {@nx.include com.norconex.commons.lang.security.Credentials@nx.xml.usage}
  *   </credentials>
@@ -81,17 +84,17 @@ import com.norconex.commons.lang.xml.XML;
  *     (Optional property name where to store the document reference
  *     in Neo4j graph entries.  Use it as a cypher parameter to uniquely
  *     identify your graph entries in your configured "upsertCypher" and
- *     "deleteCypher" queries. Default is "id").
+ *     "deleteCypher" queries. Default is "id".)
  *   </nodeIdProperty>
  *   <nodeContentProperty>
  *     (Optional property name where to store the document content
  *     in Neo4j graph entries.  Use it as a cypher parameter
- *     in your configured "upsertCypher" query. Default is "content").
+ *     in your configured "upsertCypher" query. Default is "content".)
  *   </nodeContentProperty>
  *   <optionalParameters>
  *     (Comma-separated list of parameter names that can be missing when
  *     creating the query. They will be set to {@link NullValue}) to avoid
- *     client exception for missing parameters.
+ *     client exception for missing parameters.)
  *   <optionalParameters>
  *
  *   {@nx.include com.norconex.committer.core3.batch.AbstractBatchCommitter#options}
@@ -131,6 +134,7 @@ import com.norconex.commons.lang.xml.XML;
  * @author Sylvain Roussy
  * @author Pascal Essiembre
  */
+@SuppressWarnings("javadoc")
 public class Neo4jCommitter extends AbstractBatchCommitter {
 
     private final Neo4jCommitterConfig config;
