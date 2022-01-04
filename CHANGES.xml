@@ -7,21 +7,29 @@
   </properties>
   <body>
 
-    <release version="2.0.0-RC1" date="2021-10-10" 
-        description="Release Candidate 1.">
+    <release version="2.0.0" date="2022-01-04" 
+            description="Major release. NOT a drop-in replacement for 1.x.">
+
+      <!-- 2.0.0 (GA) -->
+
+      <action dev="essiembre" type="update">
+        Updated transitive dependencies with known vulnerabilities.
+      </action>
+            
+      <!-- 2.0.0-RC1 -->    
+    
       <action dev="essiembre" type="fix">
         Fixed invalid configuration in POM "maven-dependency-plugin".
       </action>
-    </release>
 
-    <release version="2.0.0-M2" date="2021-07-28" 
-        description="Changes since last milestone for this upcoming major release.">
+      <!-- 2.0.0-M2 -->   
+
       <action dev="essiembre" type="add" issue="7">
         Can now configure a database name.
       </action>
-    </release>
-
-    <release version="2.0.0-M1" date="2021-03-01" description="Major release">
+      
+      <!-- 2.0.0-M1 -->   
+      
       <action dev="essiembre" type="update">
         Major refactor to support Norconex Committer Core 3.x.  Adds ability
         to retry failing batches, perform field mapping, routing, etc. See
