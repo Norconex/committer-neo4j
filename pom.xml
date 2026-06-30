@@ -1,4 +1,4 @@
-<!-- 
+﻿<!-- 
    Copyright 2019-2021 Norconex Inc.
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,29 +13,24 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.norconex.commons</groupId>
-    <artifactId>norconex-commons-maven-parent</artifactId>
-    <version>1.0.0</version>
-  </parent>  
-  <groupId>com.norconex.collectors</groupId>
+    <groupId>com.norconex.collectors.v3</groupId>
+    <artifactId>norconex-collector-parent</artifactId>
+    <version>3.2.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.norconex.collectors.v3</groupId>
   <artifactId>norconex-committer-neo4j</artifactId>
-  <version>2.0.0</version>
+  <version>3.2.0-SNAPSHOT</version>
   <name>Norconex Committer Neo4j</name>
   <description>Neo4j implementation of Norconex Committer.</description>
-  
   <properties>
     <neo4j.driver.version>4.4.2</neo4j.driver.version>
     <netty.version>4.1.72.Final</netty.version>
     <testcontainers.version>1.15.1</testcontainers.version>
   </properties>
-
   <inceptionYear>2018</inceptionYear>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -45,15 +40,13 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
-
     <dependency>
       <groupId>com.norconex.commons</groupId>
       <artifactId>norconex-commons-lang</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.norconex.collectors</groupId>
+      <groupId>com.norconex.collectors.v3</groupId>
       <artifactId>norconex-committer-core</artifactId>
     </dependency>
     <dependency>
@@ -61,9 +54,7 @@
       <artifactId>neo4j-java-driver</artifactId>
       <version>${neo4j.driver.version}</version>
     </dependency>
-
     <!-- Test and provided: -->
-    
     <dependency>
       <groupId>org.neo4j.test</groupId>
       <artifactId>neo4j-harness</artifactId>
@@ -79,7 +70,7 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <scope>test</scope>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -97,7 +88,6 @@
       <version>${testcontainers.version}</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>com.norconex.commons</groupId>
       <artifactId>norconex-commons-lang</artifactId>
@@ -105,16 +95,13 @@
       <type>zip</type>
       <scope>provided</scope>
     </dependency>
-
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -123,35 +110,30 @@
                we need to include that dependency here. -->
           <tagletArtifacts combine.children="append">
             <tagletArtifact>
-              <groupId>com.norconex.collectors</groupId>
+              <groupId>com.norconex.collectors.v3</groupId>
               <artifactId>norconex-committer-core</artifactId>
-              <version>${norconex-committer-core.version}</version>
+              <version>${project.version}</version>
             </tagletArtifact>
           </tagletArtifacts>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
       </plugin>
-    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
       </plugin>
-      
       <!--  Use VM argument -Dgpg.skip=true to disable GPG signing. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
       </plugin>
-
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
-      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -172,19 +154,16 @@
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
-
   <!-- Only used to publish javadoc with "site:deploy", 
      after they were generated -->
   <distributionManagement>
     <site>
       <id>norconex-site-deployment</id>
-      <url>${site.baseurl}/committers/neo4j/v2</url>      
+      <url>${site.baseurl}/committers/neo4j/v2</url>
     </site>
   </distributionManagement>
-
   <url>https://opensource.norconex.com/committers/neo4j</url>
   <scm>
     <url>https://github.com/Norconex/committer-neo4j</url>
