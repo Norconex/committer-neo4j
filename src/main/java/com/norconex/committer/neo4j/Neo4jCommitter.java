@@ -36,7 +36,7 @@ import com.norconex.commons.lang.xml.XML;
  * Commit documents/fields to a Neo4j graph database.
  * </p>
  *
- * <h3>Authentication</h3>
+ * <h2>Authentication</h2>
  * <p>
  * Basic authentication is supported for password-protected
  * Solr installations.
@@ -144,9 +144,14 @@ public class Neo4jCommitter extends AbstractBatchCommitter {
     @EqualsExclude
     private Neo4jClient client;
 
+    /** Creates a new Neo4j committer with default configuration. */
     public Neo4jCommitter() {
         this(new Neo4jCommitterConfig());
     }
+    /**
+     * Creates a new Neo4j committer with the given configuration.
+     * @param config committer configuration
+     */
     public Neo4jCommitter(Neo4jCommitterConfig config) {
         this.config = Objects.requireNonNull(
                 config, "'config' must not be null.");
@@ -170,6 +175,10 @@ public class Neo4jCommitter extends AbstractBatchCommitter {
         }
     }
 
+    /**
+     * Gets this committer's configuration.
+     * @return committer configuration
+     */
     public Neo4jCommitterConfig getConfig() {
         return config;
     }
